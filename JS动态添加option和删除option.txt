@@ -1,0 +1,218 @@
+动态创建select
+
+function createSelect(){ 
+var mySelect = document.createElement("select"); 
+mySelect.id = "mySelect"; 
+document.body.appendChild(mySelect); 
+} 
+
+添加选项option
+
+function addOption(){ 
+//根据id查找对象， 
+var obj=document.getElementById('mySelect'); 
+//添加一个选项 
+obj.add(new Option("文本","值")); //这个只能在IE中有效 
+obj.options.add(new Option("text","value")); //这个兼容IE与firefox 
+} 
+
+删除所有选项option
+
+function removeAll(){ 
+var obj=document.getElementById('mySelect'); 
+obj.options.length=0; 
+} 
+
+删除一个选项option
+
+function removeOne(){ 
+var obj=document.getElementById('mySelect'); 
+//index,要删除选项的序号，这里取当前选中选项的序号 
+var index=obj.selectedIndex; 
+obj.options.remove(index); 
+} 
+
+获得选项option的值
+
+var obj=document.getElementById('mySelect'); 
+var index=obj.selectedIndex; //序号，取当前选中选项的序号 
+var val = obj.options[index].value; 
+
+　获得选项option的文本
+
+var obj=document.getElementById('mySelect'); 
+var index=obj.selectedIndex; //序号，取当前选中选项的序号 
+var val = obj.options[index].text; 
+
+　修改选项option
+
+var obj=document.getElementById('mySelect'); 
+var index=obj.selectedIndex; //序号，取当前选中选项的序号 
+var val = obj.options[index]=new Option("新文本","新值"); 
+
+　删除select
+
+function removeSelect(){ 
+var mySelect = document.getElementById("mySelect"); 
+mySelect.parentNode.removeChild(mySelect); 
+} 
+
+　完整代码如下
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//ZH-CN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html"> 
+<head> 
+<script language=JavaScript> 
+function $(id) 
+{ 
+return document.getElementById(id) 
+} 
+function show() 
+{ 
+var selectObj=$("area") 
+var myOption=document.createElement("option") 
+myOption.setAttribute("value","10") 
+myOption.appendChild(document.createTextNode("上海")) 
+var myOption1=document.createElement("option") 
+myOption1.setAttribute("value","100") 
+myOption1.appendChild(document.createTextNode("南京")) 
+selectObj.appendChild(myOption) 
+selectObj.appendChild(myOption1) 
+} 
+function choice() 
+{ 
+var index=$("area").selectedIndex; 
+var val=$("area").options[index].getAttribute("value") 
+if(val==10) 
+{ 
+var i=$("context").childNodes.length-1; 
+var remobj=$("context").childNodes[i]; 
+remobj.removeNode(true) 
+var sh=document.createElement("select") 
+sh.add(new Option("浦东新区","101")) 
+sh.add(new Option("黄浦区","102")) 
+sh.add(new Option("徐汇区","103")) 
+sh.add(new Option("普陀区","104")) 
+$("context").appendChild(sh) 
+} 
+if(val==100) 
+{ 
+var i=$("context").childNodes.length-1; 
+var remobj=$("context").childNodes[i]; 
+remobj.removeNode(true) 
+var nj=document.createElement("select") 
+nj.add(new Option("玄武区","201")) 
+nj.add(new Option("白下区","202")) 
+nj.add(new Option("下关区","203")) 
+nj.add(new Option("栖霞区","204")) 
+$("context").appendChild(nj) 
+} 
+} 
+function calc() 
+{ 
+var x=$("context").childNodes.length-1; 
+alert(x) 
+} 
+function remove() 
+{ 
+var i=$("context").childNodes.length-1; 
+var remobj=$("context").childNodes[i]; 
+remobj.removeNode(true) 
+} 
+</script> 
+<body> 
+<div id="context"> 
+<select id="area" onchange="choice()"> 
+</select> 
+</div> 
+<input type=button value="显示" onclick="show()"> 
+<input type=button value="计算结点" onclick="calc()"> 
+<input type=button value="删除" onclick="remove()"> 
+</body> 
+</html>
+
+
+　改进版：在select中添加、修改、删除option元素
+
+function watch_ini(){ // 初始 
+for(var i=0; i<arguments.length; i++){ 
+var word = document.createElement("OPTION"); 
+word.text = arguments[i]; 
+watch.keywords.add(word); // watch. is form name 
+} 
+} 
+function watch_add(f){ // 增加 
+var word = document.createElement("OPTION"); 
+word.text = f.word.value; 
+f.keywords.add(word); 
+} 
+
+
+　兼容FF和Opera，对上述代码进行了一下改进，改动后代码如下：
+
+function watch_ini(){ // 初始 
+for(var i=0; i<arguments.length; i++){ 
+var oOption=new Option(arguments[i],arguments[i]); 
+document.getElementById("MySelect")[i]=oOption; 
+} 
+} 
+function watch_add(f){ // 增加 
+var oOption=new Option(f.word.value,f.word.value); 
+f.keywords[f.keywords.length]=oOption; 
+} 
+
+　整个实例的完整代码如下
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en"> 
+<html> 
+<head> 
+<title>javascript select options text value</title> 
+<meta name="keywords" content="javascript select options text value add modify delete set"> 
+<meta name="description" content="javascript select options text value add modify delete set"> 
+<script language="javascript"> 
+<!-- 
+function watch_ini(){ // 初始 
+for(var i=0; i<arguments.length; i++){ 
+var oOption=new Option(arguments[i],arguments[i]); 
+document.getElementById("MySelect")[i]=oOption; 
+} 
+} 
+function watch_add(f){ // 增加 
+var oOption=new Option(f.word.value,f.word.value); 
+f.keywords[f.keywords.length]=oOption; 
+} 
+function watch_sel(f){ // 编辑 
+f.word.value = f.keywords[f.keywords.selectedIndex].text; 
+} 
+function watch_mod(f){ // 修改 
+f.keywords[f.keywords.selectedIndex].text = f.word.value; 
+} 
+function watch_del(f){ // 删除 
+f.keywords.remove(f.keywords.selectedIndex); 
+} 
+function watch_set(f){ // 保存 
+var set = ""; 
+for(var i=0; i<f.keywords.length; i++){ 
+set += f.keywords[i].text + ";"; 
+} 
+confirm(set); 
+} 
+//--> 
+</script> 
+</head> 
+<body> 
+<form name="watch" method="post" action=""> 
+<select id="MySelect" name="keywords" size="10" onchange="watch_sel(this.form)"></select><br> 
+<script language="javascript"> 
+<!-- 
+watch_ini("我","你","妳","他","她","它","尔"); // 初始关键词 
+//--> 
+</script> 
+<input type="text" name="word" /><br /> 
+<input type="button" value="增加" onclick="watch_add(this.form);" /> 
+<input type="button" value="修改" onclick="watch_mod(this.form);" /> 
+<input type="button" value="删除" onclick="watch_del(this.form);" /> 
+<input type="button" value="保存" onclick="watch_set(this.form);" /> 
+</form> 
