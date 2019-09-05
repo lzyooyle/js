@@ -1,0 +1,23 @@
+$(document).ready(function(){
+var mcssn = getUrlParams("from_openid");
+//alert(msccn);
+document.write(mcssn);
+}); 
+ 
+function getUrlParams(names) {
+//获取？后面的参数
+   var urlSearch = location.search;
+   //alert(urlSearch);
+   var urlValue="";
+   //以？*&来拆分
+   var params = urlSearch.split(/[?*&]/);
+    for(var i=0;i<params.length;i++){
+    //如果url参数里包含传递过来names字段，则取=后面的部分
+        if(params[i].indexOf(names) >= 0 ){
+            urlValue=params[i].split("=")[1];
+            return urlValue;
+        }
+    }
+ 
+   return urlValue;
+}  
